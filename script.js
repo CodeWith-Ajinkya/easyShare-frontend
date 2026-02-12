@@ -58,6 +58,8 @@ dropZone.addEventListener("drop", e => {
 /* UPLOAD FILE */
 function uploadFile(file) {
 
+    // Hide dropzone during upload/result
+    dropZone.style.display = "none";
     progressContainer.style.display = "block";
     shareContainer.style.display = "none";
 
@@ -80,35 +82,58 @@ function uploadFile(file) {
     xhr.onload = () => {
         progressContainer.style.display = "none";
 
-        if (xhr.status !== 200) return showError("Upload failed!");
+        if (xhr.status !== 200) {
+            showError("Upload failed!");
+            dropZone.style.display = "block"; // Show dropzone again on error
+            return;
+        }
 
         let res;
 
         try {
             res = JSON.parse(xhr.responseText);
         } catch {
+            dropZone.style.display = "block";
             return showError("Invalid server response!");
         }
 
-        if (!res.file || !res.uuid)
+        if (!res.file || !res.uuid) {
+            dropZone.style.display = "block";
             return showError("Server missing required fields!");
+        }
 
         fileLink.value = res.file;
         uploadedUUID = res.uuid;
 
         shareContainer.style.display = "block";
-        fileInput.value = "";
+        fileInput.value = ""; // Clear input
     };
 
     xhr.onerror = () => {
         progressContainer.style.display = "none";
+        dropZone.style.display = "block";
         showError("Cannot connect to server!");
     };
 
     xhr.send(formData);
 }
 
+/* UPLOAD ANOTHER (RESET) */
+const reloadBtn = document.getElementById("reloadBtn");
+reloadBtn.addEventListener("click", () => {
+    shareContainer.style.display = "none";
+    dropZone.style.display = "block";
+    fileInput.value = "";
+    uploadedUUID = null;
+    progressFill.style.width = "0%";
+    progressPercent.innerText = "0%";
+    senderEmail.value = "";
+    receiverEmail.value = "";
+});
+
+
 /* COPY LINK */
+
 copyBtn.addEventListener("click", async () => {
     try {
         await navigator.clipboard.writeText(fileLink.value);
