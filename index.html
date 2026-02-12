@@ -1,64 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>easyShare - File Sharing</title>
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<img src="logo.png" class="site-logo" />
+    <img src="logo.png" class="site-logo" />
 
-<section class="upload-container">
+    <div class="theme-toggle" id="themeToggle">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+    </div>
 
-    <div class="drop-zone" id="drop-zone">
-        <input type="file" id="fileInput" hidden />
 
-        <div class="center-content">
-            <div class="icon-wrapper">
-                <img src="u.svg" class="icon left" draggable="false" />
-                <img src="u.svg" class="icon center" draggable="false" />
-                <img src="u.svg" class="icon right" draggable="false" />
+    <section class="upload-container">
+
+        <div class="drop-zone" id="drop-zone">
+            <input type="file" id="fileInput" hidden />
+
+            <div class="center-content">
+                <div class="icon-wrapper">
+                    <img src="u.svg" class="icon left" draggable="false" />
+                    <img src="u.svg" class="icon center" draggable="false" />
+                    <img src="u.svg" class="icon right" draggable="false" />
+                </div>
+
+                <div class="title">
+                    Drop your Files here or ,
+                    <span class="BrowseBtn" id="browseBtn">Browse</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-text">
+                Uploading… <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="share-container" id="shareContainer">
+            <p class="expire-text">Link expires in 24 hrs</p>
+
+            <div class="link-box">
+                <input type="text" id="fileLink" readonly />
+                <button id="copyBtn">Copy</button>
             </div>
 
-            <div class="title">
-                Drop your Files here or ,
-                <span class="BrowseBtn" id="browseBtn">Browse</span>
-            </div>
-        </div>
-    </div>
+            <p class="or-text">Or Send via Email</p>
 
-    <div class="progress-container" id="progressContainer">
-        <div class="progress-text">
-            Uploading… <span id="progressPercent">0%</span>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-    </div>
-
-    <div class="share-container" id="shareContainer">
-        <p class="expire-text">Link expires in 24 hrs</p>
-
-        <div class="link-box">
-            <input type="text" id="fileLink" readonly />
-            <button id="copyBtn">Copy</button>
+            <input type="email" id="senderEmail" placeholder="Your email" />
+            <input type="email" id="receiverEmail" placeholder="Receiver's email" />
+            <button id="sendBtn">Send</button>
         </div>
 
-        <p class="or-text">Or Send via Email</p>
+    </section>
 
-        <input type="email" id="senderEmail" placeholder="Your email" />
-        <input type="email" id="receiverEmail" placeholder="Receiver's email" />
-        <button id="sendBtn">Send</button>
-    </div>
+    <div class="copy-toast" id="copyToast">Link copied to clipboard</div>
+    <div class="copy-toast" id="errorToast"></div>
 
-</section>
-
-<div class="copy-toast" id="copyToast">Link copied to clipboard</div>
-<div class="copy-toast" id="errorToast"></div>
-
-<script src="./script.js"></script>
+    <script src="./script.js"></script>
 
 </body>
+
 </html>

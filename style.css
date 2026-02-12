@@ -1,7 +1,19 @@
 :root {
     --main-bg-color: #eff5fe;
     --border-color: #b6d9f2;
+    --text-color: #000;
+    --container-bg: #fff;
+    --title-color: #555;
 }
+
+body.dark-mode {
+    --main-bg-color: #121212;
+    --border-color: #444;
+    --text-color: #e0e0e0;
+    --container-bg: #1e1e1e;
+    --title-color: #b0b0b0;
+}
+
 
 * {
     box-sizing: border-box;
@@ -27,11 +39,14 @@ body {
 
 /* Main Card */
 .upload-container {
-    background: #fff;
+    background: var(--container-bg);
     width: 600px;
     border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
 }
+
 
 /* Drop zone */
 .drop-zone {
@@ -40,7 +55,8 @@ body {
     border-radius: 14px;
     height: 300px;
     position: relative;
-    overflow: visible; /* IMPORTANT: prevents icon cutting */
+    overflow: visible;
+    /* IMPORTANT: prevents icon cutting */
 }
 
 /* Center UI */
@@ -79,8 +95,8 @@ body {
     transform-origin: center;
 }
 
-.icon.center { 
-    z-index: 3; 
+.icon.center {
+    z-index: 3;
 }
 
 .icon.left,
@@ -111,8 +127,9 @@ body {
 
 .title {
     font-size: 16px;
-    color: #555;
+    color: var(--title-color);
 }
+
 
 .BrowseBtn {
     color: #0b84ff;
@@ -162,8 +179,9 @@ body {
 .expire-text {
     margin-bottom: 12px;
     font-size: 14px;
-    color: #555;
+    color: var(--title-color);
 }
+
 
 .link-box {
     display: flex;
@@ -216,4 +234,79 @@ body {
 .copy-toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+}
+
+/* ========================= */
+/* DARK MODE TOGGLE */
+/* ========================= */
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 100;
+    transition: background 0.3s;
+    user-select: none;
+}
+
+body.dark-mode .theme-toggle {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-sun,
+.icon-moon {
+    position: absolute;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Light Mode Default: Moon visible */
+.icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+.icon-moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* Dark Mode: Sun visible */
+body.dark-mode .icon-sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+body.dark-mode .icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+/* Invert dropzone icons in dark mode */
+body.dark-mode .icon {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+body.dark-mode input {
+    background-color: #2a2a2a;
+    color: #fff;
+    border-color: #444;
 }

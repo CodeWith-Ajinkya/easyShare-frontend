@@ -150,3 +150,19 @@ sendBtn.addEventListener("click", async () => {
         showError("Server not responding!");
     }
 });
+
+/* DARK MODE LOGIC */
+const themeToggle = document.getElementById("themeToggle");
+const body = document.body;
+
+// Check local storage
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+    body.classList.add("dark-mode");
+}
+
+themeToggle.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const isDark = body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+});
