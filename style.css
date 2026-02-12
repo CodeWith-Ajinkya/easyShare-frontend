@@ -1,0 +1,219 @@
+:root {
+    --main-bg-color: #eff5fe;
+    --border-color: #b6d9f2;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: var(--main-bg-color);
+    display: flex;
+    justify-content: center;
+    padding-top: 80px;
+}
+
+/* Logo top-left */
+.site-logo {
+    position: fixed;
+    top: 18px;
+    left: 20px;
+    width: 400px;
+    z-index: 20;
+}
+
+/* Main Card */
+.upload-container {
+    background: #fff;
+    width: 600px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Drop zone */
+.drop-zone {
+    margin: 25px;
+    border: 2px dashed var(--border-color);
+    border-radius: 14px;
+    height: 300px;
+    position: relative;
+    overflow: visible; /* IMPORTANT: prevents icon cutting */
+}
+
+/* Center UI */
+.center-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========================= */
+/* ICON SECTION - FIXED */
+/* ========================= */
+
+.icon-wrapper {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 22px;
+}
+
+/* Remove mask completely */
+.icon-mask {
+    display: none;
+}
+
+.icon {
+    width: 72px;
+    position: absolute;
+    inset: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+    backface-visibility: hidden;
+    transform-origin: center;
+}
+
+.icon.center { 
+    z-index: 3; 
+}
+
+.icon.left,
+.icon.right {
+    opacity: 0;
+    transform: scale(0.6);
+    z-index: 1;
+}
+
+/* Drag Animation */
+.drop-zone.drag-active .icon.center {
+    transform: translateY(-6px);
+}
+
+.drop-zone.drag-active .icon.left {
+    opacity: 1;
+    transform: translateX(-28px) rotate(-8deg) scale(1);
+}
+
+.drop-zone.drag-active .icon.right {
+    opacity: 1;
+    transform: translateX(28px) rotate(8deg) scale(1);
+}
+
+/* ========================= */
+/* TEXT */
+/* ========================= */
+
+.title {
+    font-size: 16px;
+    color: #555;
+}
+
+.BrowseBtn {
+    color: #0b84ff;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* ========================= */
+/* PROGRESS SECTION */
+/* ========================= */
+
+.progress-container {
+    display: none;
+    padding: 20px 25px 30px;
+}
+
+.progress-text {
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.progress-track {
+    margin-top: 5px;
+    height: 6px;
+    background: #e6effa;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #0b84ff;
+    transition: width 0.3s ease;
+}
+
+/* ========================= */
+/* SHARE PAGE */
+/* ========================= */
+
+.share-container {
+    display: none;
+    padding: 0 25px 25px;
+    text-align: center;
+}
+
+.expire-text {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.link-box {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.link-box input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #cfe3f6;
+    border-radius: 6px;
+}
+
+.link-box button {
+    background: #0b84ff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.share-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+/* ========================= */
+/* TOASTS */
+/* ========================= */
+
+.copy-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #333;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 99;
+}
+
+.copy-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
