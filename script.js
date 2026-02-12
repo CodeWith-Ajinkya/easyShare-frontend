@@ -112,7 +112,13 @@ function uploadFile(file) {
     xhr.onerror = () => {
         progressContainer.style.display = "none";
         dropZone.style.display = "block";
-        showError("Cannot connect to server!");
+        showError("Cannot connect to server! Please check your internet connection.");
+    };
+
+    xhr.ontimeout = () => {
+        progressContainer.style.display = "none";
+        dropZone.style.display = "block";
+        showError("Upload timed out! Please try again.");
     };
 
     xhr.send(formData);
@@ -166,13 +172,16 @@ sendBtn.addEventListener("click", async () => {
 
         const data = await res.json();
 
-        if (!data.success)
-            return showError("Email failed!");
+        if (!data.success) {
+            const errorMsg = data.error || "Email failed!";
+            return showError(errorMsg);
+        }
 
         alert("Email sent successfully!");
 
-    } catch {
-        showError("Server not responding!");
+    } catch (err) {
+        console.error("Email error:", err);
+        showError("Server not responding! Please try again later.");
     }
 });
 
@@ -190,4 +199,14 @@ themeToggle.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
     const isDark = body.classList.contains("dark-mode");
     localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+/* FAQ ACCORDION */
+const faqQuestions = document.querySelectorAll(".faq-question");
+
+faqQuestions.forEach(question => {
+    question.addEventListener("click", () => {
+        const item = question.parentElement;
+        item.classList.toggle("open");
+    });
 });
