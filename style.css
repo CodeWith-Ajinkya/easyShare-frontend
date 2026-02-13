@@ -45,6 +45,11 @@ body {
     left: 20px;
     width: 400px;
     z-index: 20;
+    transition: filter 0.3s;
+}
+
+body.dark-mode .site-logo {
+    filter: invert(1) brightness(1.2);
 }
 
 /* Main Card */
