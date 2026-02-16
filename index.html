@@ -10,7 +10,22 @@
 
 <body>
 
-    <img src="logo.png" class="site-logo" />
+    <div class="site-logo-container">
+        <!-- Premium Transparent SVG Logo -->
+        <svg class="site-logo-svg" viewBox="0 0 250 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#0b84ff" />
+                    <stop offset="100%" stop-color="#8b5cf6" />
+                </linearGradient>
+            </defs>
+            <rect x="5" y="7" width="46" height="46" rx="14" fill="url(#logoGrad)" />
+            <path d="M18 30L28 20L38 30M28 23V40" stroke="white" stroke-width="3.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <text x="65" y="40" fill="currentColor" font-family="'Outfit', sans-serif" font-weight="800"
+                font-size="28">easyShare</text>
+        </svg>
+    </div>
 
     <div class="theme-toggle" id="themeToggle">
         <span class="icon-sun">☀️</span>
@@ -151,15 +166,40 @@
     </section>
 
     <footer class="footer">
-        <p>Made with ❤️ by easyShare Team</p>
-        <p class="footer-links">
-            <a href="#">Privacy Policy</a> •
-            <a href="#">Terms of Service</a> •
-            <a href="mailto:easyshare.offical@gmail.com">Contact</a>
-        </p>
-        <p class="footer-email">
-            <a href="mailto:easyshare.offical@gmail.com">easyshare.offical@gmail.com</a>
-        </p>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>easyShare</h3>
+                <p>Private, secure, and lightning-fast file sharing. Your files, your way, anywhere in the world.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Speed</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="mailto:easyshare.offical@gmail.com">Email Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-icon">𝕏</a>
+                    <a href="#" class="social-icon">📸</a>
+                    <a href="#" class="social-icon">💼</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 easyShare Team. All rights reserved.</p>
+            <p>Made with ❤️ for the community</p>
+        </div>
     </footer>
 
     <div class="copy-toast" id="copyToast">Link copied to clipboard</div>

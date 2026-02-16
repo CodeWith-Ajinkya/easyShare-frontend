@@ -83,7 +83,7 @@ function uploadFile(file) {
         if (xhr.status !== 200) {
             progressContainer.style.display = "none";
             showError("Upload failed!");
-            dropZone.style.display = "block";
+            dropZone.style.display = "flex";
             return;
         }
 
@@ -97,32 +97,32 @@ function uploadFile(file) {
             try {
                 res = JSON.parse(xhr.responseText);
             } catch {
-                dropZone.style.display = "block";
+                dropZone.style.display = "flex";
                 return showError("Invalid server response!");
             }
 
             if (!res.file || !res.uuid) {
-                dropZone.style.display = "block";
+                dropZone.style.display = "flex";
                 return showError("Server missing required fields!");
             }
 
             fileLink.value = res.file;
             uploadedUUID = res.uuid;
 
-            shareContainer.style.display = "block";
+            shareContainer.style.display = "flex";
             fileInput.value = "";
         }, 300); // Short delay for visual completion
     };
 
     xhr.onerror = () => {
         progressContainer.style.display = "none";
-        dropZone.style.display = "block";
+        dropZone.style.display = "flex";
         showError("Cannot connect to server! Please check your internet connection.");
     };
 
     xhr.ontimeout = () => {
         progressContainer.style.display = "none";
-        dropZone.style.display = "block";
+        dropZone.style.display = "flex";
         showError("Upload timed out! Please try again.");
     };
 
@@ -133,7 +133,7 @@ function uploadFile(file) {
 const reloadBtn = document.getElementById("reloadBtn");
 reloadBtn.addEventListener("click", () => {
     shareContainer.style.display = "none";
-    dropZone.style.display = "block";
+    dropZone.style.display = "flex";
     fileInput.value = "";
     uploadedUUID = null;
     progressFill.style.width = "0%";
