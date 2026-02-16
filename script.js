@@ -80,33 +80,38 @@ function uploadFile(file) {
     };
 
     xhr.onload = () => {
-        progressContainer.style.display = "none";
-
         if (xhr.status !== 200) {
+            progressContainer.style.display = "none";
             showError("Upload failed!");
-            dropZone.style.display = "block"; // Show dropzone again on error
+            dropZone.style.display = "block";
             return;
         }
 
-        let res;
+        // Ensure progress shows 100% before hiding
+        progressFill.style.width = "100%";
+        progressPercent.innerText = "100%";
 
-        try {
-            res = JSON.parse(xhr.responseText);
-        } catch {
-            dropZone.style.display = "block";
-            return showError("Invalid server response!");
-        }
+        setTimeout(() => {
+            progressContainer.style.display = "none";
+            let res;
+            try {
+                res = JSON.parse(xhr.responseText);
+            } catch {
+                dropZone.style.display = "block";
+                return showError("Invalid server response!");
+            }
 
-        if (!res.file || !res.uuid) {
-            dropZone.style.display = "block";
-            return showError("Server missing required fields!");
-        }
+            if (!res.file || !res.uuid) {
+                dropZone.style.display = "block";
+                return showError("Server missing required fields!");
+            }
 
-        fileLink.value = res.file;
-        uploadedUUID = res.uuid;
+            fileLink.value = res.file;
+            uploadedUUID = res.uuid;
 
-        shareContainer.style.display = "block";
-        fileInput.value = ""; // Clear input
+            shareContainer.style.display = "block";
+            fileInput.value = "";
+        }, 300); // Short delay for visual completion
     };
 
     xhr.onerror = () => {
@@ -159,6 +164,12 @@ sendBtn.addEventListener("click", async () => {
     if (!senderEmail.value || !receiverEmail.value)
         return showError("Enter both emails!");
 
+    // Disable button and show loading state
+    sendBtn.disabled = true;
+    const originalBtnText = sendBtn.innerText;
+    sendBtn.innerText = "Sending...";
+    sendBtn.style.opacity = "0.7";
+
     try {
         const res = await fetch(`${API_BASE}/api/files/send`, {
             method: "POST",
@@ -174,14 +185,19 @@ sendBtn.addEventListener("click", async () => {
 
         if (!data.success) {
             const errorMsg = data.error || "Email failed!";
-            return showError(errorMsg);
+            showError(errorMsg);
+        } else {
+            alert("Email sent successfully!");
         }
-
-        alert("Email sent successfully!");
 
     } catch (err) {
         console.error("Email error:", err);
         showError("Server not responding! Please try again later.");
+    } finally {
+        // Re-enable button
+        sendBtn.disabled = false;
+        sendBtn.innerText = originalBtnText;
+        sendBtn.style.opacity = "1";
     }
 });
 
