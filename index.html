@@ -10,9 +10,24 @@
 
 <body>
 
-    <img src="logo.png" class="site-logo" />
+    <!-- Premium SVG Logo placeholder -->
+    <div class="site-logo-container">
+        <svg class="site-logo-svg" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#6366f1" />
+                    <stop offset="100%" stop-color="#a855f7" />
+                </linearGradient>
+            </defs>
+            <rect x="5" y="5" width="40" height="40" rx="12" fill="url(#logoGrad)" />
+            <path d="M15 25L25 15L35 25M25 18V35" stroke="white" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <text x="55" y="33" fill="currentColor" font-family="'Outfit', sans-serif" font-weight="700"
+                font-size="22">easyShare</text>
+        </svg>
+    </div>
 
-    <div class="theme-toggle" id="themeToggle">
+    <div class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
         <span class="icon-sun">☀️</span>
         <span class="icon-moon">🌙</span>
     </div>
@@ -100,43 +115,53 @@
     </section>
 
     <section class="features-container">
-        <h2>Why Choose easyShare?</h2>
+        <div class="section-badge">Premium Features</div>
+        <h2>Why we use easyShare?</h2>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">⚡</div>
+                <div class="feature-icon-box">⚡</div>
                 <h3>Lightning Fast</h3>
-                <p>Upload and share files in seconds with our optimized infrastructure</p>
+                <p>Experience blazing speeds for all your transfers with our globally distributed edge nodes.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔒</div>
+                <div class="feature-icon-box">🔒</div>
                 <h3>Secure & Private</h3>
-                <p>End-to-end encryption ensures your files remain confidential</p>
+                <p>Military-grade AES-256 encryption ensures that your files stay yours and yours alone.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Simple to Use</h3>
-                <p>No registration required. Just drag, drop, and share instantly</p>
+                <div class="feature-icon-box">🎯</div>
+                <h3>Simplicity First</h3>
+                <p>No account, no sign-up, no hassle. Just drop your file and get your link instantly.</p>
             </div>
         </div>
     </section>
 
     <section class="how-it-works-container">
-        <h2>How It Works</h2>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Upload Your File</h3>
-                <p>Drag and drop or click to browse your files</p>
+        <div class="section-badge">Simple Steps</div>
+        <h2>Simple, Fast, & Transparent</h2>
+        <div class="steps-creative">
+            <div class="step-item">
+                <div class="step-number-pill">01</div>
+                <div class="step-content">
+                    <h3>Upload</h3>
+                    <p>Drag your files into the vault. We encrypt them instantly.</p>
+                </div>
             </div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Get Your Link</h3>
-                <p>Receive a unique shareable link instantly</p>
+            <div class="step-line"></div>
+            <div class="step-item">
+                <div class="step-number-pill">02</div>
+                <div class="step-content">
+                    <h3>Generate</h3>
+                    <p>Get a unique, encrypted link that expires automatically.</p>
+                </div>
             </div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Share Anywhere</h3>
-                <p>Copy the link or send directly via email</p>
+            <div class="step-line"></div>
+            <div class="step-item">
+                <div class="step-number-pill">03</div>
+                <div class="step-content">
+                    <h3>Share</h3>
+                    <p>Send the link or email it. Your file is ready for download.</p>
+                </div>
             </div>
         </div>
     </section>
