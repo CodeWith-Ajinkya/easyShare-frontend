@@ -249,17 +249,20 @@ body.dark-mode .icon-moon {
 }
 
 .drop-zone.drag-active .icon.center {
-    transform: translate(-50%, -65%) scale(1.15);
+    transform: translate(-50%, -65%) scale(1.1);
+    /* Subtle popup */
 }
 
 .drop-zone.drag-active .icon.left {
     opacity: 0.7;
-    transform: translate(-100px, -20px) rotate(-18deg) scale(0.95);
+    transform: translate(-90%, -60%) rotate(-12deg) scale(0.9);
+    /* Slight out */
 }
 
 .drop-zone.drag-active .icon.right {
     opacity: 0.7;
-    transform: translate(30px, -20px) rotate(18deg) scale(0.95);
+    transform: translate(-10%, -60%) rotate(12deg) scale(0.9);
+    /* Slight out */
 }
 
 .title {
@@ -530,6 +533,94 @@ body.dark-mode .link-box {
 .faq-item.open .faq-answer {
     max-height: 200px;
     padding-bottom: 18px;
+}
+
+/* How It Works - Creative Cards */
+.how-it-works-container {
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 120px;
+    text-align: center;
+}
+
+.how-it-works-container h2 {
+    font-size: 32px;
+    margin-bottom: 50px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.step-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    padding: 50px 40px;
+    border-radius: 32px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    text-align: center;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.step-card:hover {
+    transform: translateY(-12px);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(11, 132, 255, 0.1);
+}
+
+.step-card:hover::before {
+    opacity: 1;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 24px;
+    margin: 0 auto 25px;
+    box-shadow: 0 10px 20px var(--accent-glow);
+    transform: rotate(-5deg);
+    transition: transform 0.3s;
+}
+
+.step-card:hover .step-number {
+    transform: rotate(0deg) scale(1.1);
+}
+
+.step-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.step-card p {
+    color: var(--muted-color);
+    font-size: 15px;
+    line-height: 1.6;
 }
 
 /* Features Grid */
