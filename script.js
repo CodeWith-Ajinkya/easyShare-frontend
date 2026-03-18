@@ -76,6 +76,11 @@ dropZone.addEventListener("drop", e => {
     e.preventDefault();
     dropZone.classList.remove("drag-active");
 
+    if (mustLogin()) {
+        openAuthModal();
+        return;
+    }
+
     if (e.dataTransfer.files.length > 1)
         return showError("Only single file allowed!");
 
@@ -271,15 +276,22 @@ faqQuestions.forEach(question => {
 /* LOGIN / SIGNUP MODAL LOGIC */
 function openAuthModal() {
     loginModal.classList.add("show");
-    showLogin(); // Always show login first
+    
+    // If not logged in, ensure we show login card (default)
+    if (mustLogin()) {
+        showLogin(); 
+    }
 }
 
 loginTrigger.addEventListener("click", openAuthModal);
 
-// COMPULSORY CHECK ON LOAD: If returning user after 1 upload, show login immediately
+// COMPULSORY CHECK ON LOAD: If not logged in, show login immediately
 window.addEventListener("DOMContentLoaded", () => {
     if (mustLogin()) {
         setTimeout(openAuthModal, 500); // Small delay to allow UI to render
+    } else {
+        // Already logged in, maybe show visual feedback
+        loginTrigger.innerHTML = '✅';
     }
 });
 
@@ -329,18 +341,32 @@ loginBtn.addEventListener("click", () => {
         // Fake login success
         localStorage.setItem("isLoggedIn", "true");
         loginModal.classList.remove("show");
+        loginTrigger.innerHTML = '✅'; // Change icon to show logged in
         alert("Logged in successfully! You can now share files.");
     } else if (!savedEmail) {
         showError("No account found! Please sign up first.");
         showSignup();
     } else {
-        showError("Incorrect detail! Please try again.");
+        showError("Incorrect details! Please try again.");
     }
 });
 
 // Close modal on outside click
 loginModal.addEventListener("click", (e) => {
     if (e.target === loginModal) {
-        loginModal.classList.remove("show");
+        // Only allow closing if logged in
+        if (!mustLogin()) {
+            loginModal.classList.remove("show");
+        } else {
+            showError("Login is compulsory to continue!");
+        }
+    }
+});
+
+// Prevent escape key closing modal if login is compulsory
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mustLogin() && loginModal.classList.contains("show")) {
+        showError("Please login to continue.");
+        e.preventDefault();
     }
 });
