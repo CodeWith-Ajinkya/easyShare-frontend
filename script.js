@@ -34,6 +34,12 @@ const loginPass = document.getElementById("loginPass");
 const toLogin = document.getElementById("toLogin");
 const toSignup = document.getElementById("toSignup");
 
+function mustLogin() {
+    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    return uploadCount >= 1 && !isLoggedIn;
+}
+
 let uploadedUUID = null;
 
 /* ERROR TOAST */
@@ -45,15 +51,10 @@ function showError(msg) {
 
 /* BROWSE CLICK */
 browseBtn.addEventListener("click", () => {
-    // Check if login is required (2nd use onwards) before opening picker
-    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-    if (uploadCount >= 1 && !isLoggedIn) {
+    if (mustLogin()) {
         openAuthModal();
         return;
     }
-    
     fileInput.click();
 });
 
@@ -85,11 +86,7 @@ dropZone.addEventListener("drop", e => {
 /* UPLOAD FILE */
 function uploadFile(file) {
 
-    // Check if login is required (2nd use onwards)
-    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-    if (uploadCount >= 1 && !isLoggedIn) {
+    if (mustLogin()) {
         openAuthModal();
         fileInput.value = "";
         return;
@@ -275,6 +272,13 @@ function openAuthModal() {
 }
 
 loginTrigger.addEventListener("click", openAuthModal);
+
+// COMPULSORY CHECK ON LOAD: If returning user after 1 upload, show login immediately
+window.addEventListener("DOMContentLoaded", () => {
+    if (mustLogin()) {
+        setTimeout(openAuthModal, 500); // Small delay to allow UI to render
+    }
+});
 
 function showLogin() {
     signupCard.style.display = "none";
