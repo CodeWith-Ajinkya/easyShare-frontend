@@ -18,6 +18,11 @@ const sendBtn = document.getElementById("sendBtn");
 const senderEmail = document.getElementById("senderEmail");
 const receiverEmail = document.getElementById("receiverEmail");
 
+const loginModal = document.getElementById("loginModal");
+const loginBtn = document.getElementById("loginBtn");
+const loginEmail = document.getElementById("loginEmail");
+const loginPass = document.getElementById("loginPass");
+
 let uploadedUUID = null;
 
 /* ERROR TOAST */
@@ -28,7 +33,18 @@ function showError(msg) {
 }
 
 /* BROWSE CLICK */
-browseBtn.addEventListener("click", () => fileInput.click());
+browseBtn.addEventListener("click", () => {
+    // Check if login is required (2nd use onwards) before opening picker
+    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (uploadCount >= 1 && !isLoggedIn) {
+        loginModal.classList.add("show");
+        return;
+    }
+    
+    fileInput.click();
+});
 
 fileInput.addEventListener("change", () => {
     if (!fileInput.files.length) return;
@@ -57,6 +73,16 @@ dropZone.addEventListener("drop", e => {
 
 /* UPLOAD FILE */
 function uploadFile(file) {
+
+    // Check if login is required (2nd use onwards)
+    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (uploadCount >= 1 && !isLoggedIn) {
+        loginModal.classList.add("show");
+        fileInput.value = "";
+        return;
+    }
 
     // Hide dropzone during upload/result
     dropZone.style.display = "none";
@@ -109,9 +135,13 @@ function uploadFile(file) {
             fileLink.value = res.file;
             uploadedUUID = res.uuid;
 
+            // Increment upload count
+            const currentCount = parseInt(localStorage.getItem("uploadCount") || "0");
+            localStorage.setItem("uploadCount", currentCount + 1);
+
             shareContainer.style.display = "flex";
             fileInput.value = "";
-        }, 300); // Short delay for visual completion
+        }, 1000); // 1s delay for visual completion (100% progress)
     };
 
     xhr.onerror = () => {
@@ -225,4 +255,23 @@ faqQuestions.forEach(question => {
         const item = question.parentElement;
         item.classList.toggle("open");
     });
+});
+
+/* LOGIN LOGIC */
+loginBtn.addEventListener("click", () => {
+    if (!loginEmail.value || !loginPass.value) {
+        return showError("Please enter credentials!");
+    }
+    
+    // Fake login success
+    localStorage.setItem("isLoggedIn", "true");
+    loginModal.classList.remove("show");
+    alert("Logged in successfully! You can now upload your file.");
+});
+
+// Close modal on outside click
+loginModal.addEventListener("click", (e) => {
+    if (e.target === loginModal) {
+        loginModal.classList.remove("show");
+    }
 });

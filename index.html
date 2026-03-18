@@ -205,6 +205,20 @@
     <div class="copy-toast" id="copyToast">Link copied to clipboard</div>
     <div class="copy-toast" id="errorToast"></div>
 
+    <!-- Fake Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p>Please login to continue sharing files</p>
+            <div class="login-form">
+                <input type="email" id="loginEmail" placeholder="Email Address" />
+                <input type="password" id="loginPass" placeholder="Password" />
+                <button id="loginBtn">Login</button>
+            </div>
+            <p class="login-footer">Don't have an account? <a href="#">Sign up</a></p>
+        </div>
+    </div>
+
     <script src="./script.js"></script>
 
 </body>
