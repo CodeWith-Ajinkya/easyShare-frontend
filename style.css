@@ -118,37 +118,57 @@ body.dark-mode::after {
     transition: transform 0.3s ease;
 }
 
-.signup-premium-badge {
-    display: inline-block;
-    background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-    color: #1e293b;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(255, 154, 158, 0.3);
+#signupBtn, #loginBtn {
+    background: linear-gradient(-45deg, #0b84ff, #8b5cf6, #0b84ff);
+    background-size: 200% auto;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 15px;
+    box-shadow: 0 10px 20px -5px rgba(11, 132, 255, 0.4);
+    animation: gradientFlow 3s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+#signupBtn::after, #loginBtn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+#signupBtn:hover::after, #loginBtn:hover::after {
+    left: 120%;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#signupBtn:hover, #loginBtn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px -5px rgba(11, 132, 255, 0.5);
+    filter: brightness(1.1);
 }
 
 .input-group {
-    position: relative;
     width: 100%;
+    margin-bottom: 2px;
 }
-
-.input-group::after {
-    content: '';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    opacity: 0.5;
-}
-
-#signupEmail + .input-group::after { content: '✉️'; }
-#signupPass + .input-group::after { content: '🔑'; }
 
 body.dark-mode .site-logo-svg text {
     fill: #f1f5f9;
