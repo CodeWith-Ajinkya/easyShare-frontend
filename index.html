@@ -32,6 +32,10 @@
         <span class="icon-moon">🌙</span>
     </div>
 
+    <div class="login-trigger" id="loginTrigger">
+        <span class="icon-user">👤</span>
+    </div>
+
 
     <section class="upload-container">
 
@@ -205,9 +209,22 @@
     <div class="copy-toast" id="copyToast">Link copied to clipboard</div>
     <div class="copy-toast" id="errorToast"></div>
 
-    <!-- Fake Login Modal -->
+    <!-- Fake Login/Signup Modal -->
     <div class="modal-overlay" id="loginModal">
-        <div class="login-card">
+        <!-- Signup Card -->
+        <div class="login-card" id="signupCard">
+            <h2>Create Account</h2>
+            <p>Sign up to start sharing files securely</p>
+            <div class="login-form">
+                <input type="email" id="signupEmail" placeholder="Email Address" />
+                <input type="password" id="signupPass" placeholder="Password" />
+                <button id="signupBtn">Sign Up</button>
+            </div>
+            <p class="login-footer">Already have an account? <a href="#" id="toLogin">Login</a></p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card" id="loginCard" style="display: none;">
             <h2>Welcome Back</h2>
             <p>Please login to continue sharing files</p>
             <div class="login-form">
@@ -215,7 +232,7 @@
                 <input type="password" id="loginPass" placeholder="Password" />
                 <button id="loginBtn">Login</button>
             </div>
-            <p class="login-footer">Don't have an account? <a href="#">Sign up</a></p>
+            <p class="login-footer">Don't have an account? <a href="#" id="toSignup">Sign up</a></p>
         </div>
     </div>
 

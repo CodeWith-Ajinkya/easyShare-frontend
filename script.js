@@ -19,9 +19,20 @@ const senderEmail = document.getElementById("senderEmail");
 const receiverEmail = document.getElementById("receiverEmail");
 
 const loginModal = document.getElementById("loginModal");
+const loginTrigger = document.getElementById("loginTrigger");
+
+const signupCard = document.getElementById("signupCard");
+const signupBtn = document.getElementById("signupBtn");
+const signupEmail = document.getElementById("signupEmail");
+const signupPass = document.getElementById("signupPass");
+
+const loginCard = document.getElementById("loginCard");
 const loginBtn = document.getElementById("loginBtn");
 const loginEmail = document.getElementById("loginEmail");
 const loginPass = document.getElementById("loginPass");
+
+const toLogin = document.getElementById("toLogin");
+const toSignup = document.getElementById("toSignup");
 
 let uploadedUUID = null;
 
@@ -39,7 +50,7 @@ browseBtn.addEventListener("click", () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     if (uploadCount >= 1 && !isLoggedIn) {
-        loginModal.classList.add("show");
+        openAuthModal();
         return;
     }
     
@@ -79,7 +90,7 @@ function uploadFile(file) {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     if (uploadCount >= 1 && !isLoggedIn) {
-        loginModal.classList.add("show");
+        openAuthModal();
         fileInput.value = "";
         return;
     }
@@ -257,16 +268,71 @@ faqQuestions.forEach(question => {
     });
 });
 
-/* LOGIN LOGIC */
+/* LOGIN / SIGNUP MODAL LOGIC */
+function openAuthModal() {
+    loginModal.classList.add("show");
+    if (localStorage.getItem("fakeAccountEmail")) {
+        showLogin();
+    } else {
+        showSignup();
+    }
+}
+
+loginTrigger.addEventListener("click", openAuthModal);
+
+function showLogin() {
+    signupCard.style.display = "none";
+    loginCard.style.display = "block";
+}
+
+function showSignup() {
+    loginCard.style.display = "none";
+    signupCard.style.display = "block";
+}
+
+toLogin.addEventListener("click", (e) => { e.preventDefault(); showLogin(); });
+toSignup.addEventListener("click", (e) => { e.preventDefault(); showSignup(); });
+
+/* SIGNUP HANDLING */
+signupBtn.addEventListener("click", () => {
+    const email = signupEmail.value;
+    const pass = signupPass.value;
+
+    if (!email || !pass) {
+        return showError("All fields are required!");
+    }
+
+    // Store fake credentials
+    localStorage.setItem("fakeAccountEmail", email);
+    localStorage.setItem("fakeAccountPass", pass);
+    
+    alert("Signup successful! Now please login.");
+    showLogin();
+});
+
+/* LOGIN HANDLING */
 loginBtn.addEventListener("click", () => {
-    if (!loginEmail.value || !loginPass.value) {
+    const email = loginEmail.value;
+    const pass = loginPass.value;
+
+    const savedEmail = localStorage.getItem("fakeAccountEmail");
+    const savedPass = localStorage.getItem("fakeAccountPass");
+
+    if (!email || !pass) {
         return showError("Please enter credentials!");
     }
-    
-    // Fake login success
-    localStorage.setItem("isLoggedIn", "true");
-    loginModal.classList.remove("show");
-    alert("Logged in successfully! You can now upload your file.");
+
+    if (email === savedEmail && pass === savedPass) {
+        // Fake login success
+        localStorage.setItem("isLoggedIn", "true");
+        loginModal.classList.remove("show");
+        alert("Logged in successfully! You can now share files.");
+    } else if (!savedEmail) {
+        showError("No account found! Please sign up first.");
+        showSignup();
+    } else {
+        showError("Incorrect detail! Please try again.");
+    }
 });
 
 // Close modal on outside click
