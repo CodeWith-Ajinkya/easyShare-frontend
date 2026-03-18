@@ -271,11 +271,7 @@ faqQuestions.forEach(question => {
 /* LOGIN / SIGNUP MODAL LOGIC */
 function openAuthModal() {
     loginModal.classList.add("show");
-    if (localStorage.getItem("fakeAccountEmail")) {
-        showLogin();
-    } else {
-        showSignup();
-    }
+    showLogin(); // Always show login first
 }
 
 loginTrigger.addEventListener("click", openAuthModal);

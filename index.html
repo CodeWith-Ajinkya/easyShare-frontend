@@ -209,22 +209,10 @@
     <div class="copy-toast" id="copyToast">Link copied to clipboard</div>
     <div class="copy-toast" id="errorToast"></div>
 
-    <!-- Fake Login/Signup Modal -->
+    <!-- Fake Auth Modal -->
     <div class="modal-overlay" id="loginModal">
-        <!-- Signup Card -->
-        <div class="login-card" id="signupCard">
-            <h2>Create Account</h2>
-            <p>Sign up to start sharing files securely</p>
-            <div class="login-form">
-                <input type="email" id="signupEmail" placeholder="Email Address" />
-                <input type="password" id="signupPass" placeholder="Password" />
-                <button id="signupBtn">Sign Up</button>
-            </div>
-            <p class="login-footer">Already have an account? <a href="#" id="toLogin">Login</a></p>
-        </div>
-
         <!-- Login Card -->
-        <div class="login-card" id="loginCard" style="display: none;">
+        <div class="login-card" id="loginCard">
             <h2>Welcome Back</h2>
             <p>Please login to continue sharing files</p>
             <div class="login-form">
@@ -233,6 +221,23 @@
                 <button id="loginBtn">Login</button>
             </div>
             <p class="login-footer">Don't have an account? <a href="#" id="toSignup">Sign up</a></p>
+        </div>
+
+        <!-- Signup Card -->
+        <div class="login-card" id="signupCard" style="display: none;">
+            <div class="signup-premium-badge">✨ Free Premium</div>
+            <h2>Join easyShare</h2>
+            <p>No more limits. Start sharing now!</p>
+            <div class="login-form">
+                <div class="input-group">
+                    <input type="email" id="signupEmail" placeholder="Email Address" />
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signupPass" placeholder="Create Password" />
+                </div>
+                <button id="signupBtn">Create Account</button>
+            </div>
+            <p class="login-footer">Already have an account? <a href="#" id="toLogin">Login</a></p>
         </div>
     </div>
 
