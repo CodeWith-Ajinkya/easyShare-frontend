@@ -35,9 +35,8 @@ const toLogin = document.getElementById("toLogin");
 const toSignup = document.getElementById("toSignup");
 
 function mustLogin() {
-    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    return uploadCount >= 1 && !isLoggedIn;
+    return !isLoggedIn; // Compulsory for ALL uploads now
 }
 
 let uploadedUUID = null;
@@ -209,6 +208,7 @@ sendBtn.addEventListener("click", async () => {
     sendBtn.style.opacity = "0.7";
 
     try {
+        console.log("Sending email for UUID:", uploadedUUID);
         const res = await fetch(`${API_BASE}/api/files/send`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -219,7 +219,10 @@ sendBtn.addEventListener("click", async () => {
             })
         });
 
+        // Log response for debugging
+        console.log("Email server responded with status:", res.status);
         const data = await res.json();
+        console.log("Server data:", data);
 
         if (!data.success) {
             const errorMsg = data.error || "Email failed!";
@@ -229,7 +232,7 @@ sendBtn.addEventListener("click", async () => {
         }
 
     } catch (err) {
-        console.error("Email error:", err);
+        console.error("Email error detail:", err);
         showError("Server not responding! Please try again later.");
     } finally {
         // Re-enable button
