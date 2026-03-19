@@ -317,8 +317,17 @@ faqQuestions.forEach(question => {
 });
 
 /* LOGIN / SIGNUP MODAL LOGIC */
+function clearAuthInputs() {
+    loginEmail.value = "";
+    loginPass.value = "";
+    signupEmail.value = "";
+    signupPass.value = "";
+}
+
 function openAuthModal() {
+    clearAuthInputs();
     loginModal.classList.add("show");
+    
     
     // STRICT Page view if login is compulsory (after 1st upload)
     if (mustLogin()) {
@@ -332,16 +341,30 @@ function openAuthModal() {
 }
 
 loginTrigger.addEventListener("click", (e) => {
-    // If logged in, the user menu handles logout; don't show login modal
+    // If logged in, toggle the menu
     if (localStorage.getItem("isLoggedIn") === "true") {
+        const menu = loginTrigger.querySelector(".user-menu");
+        if (menu) {
+            menu.classList.toggle("active");
+            e.stopPropagation(); // Avoid triggering any other listeners
+        }
         return; 
     }
     openAuthModal();
 });
 
+// Close popup menu when clicking outside
+window.addEventListener("click", (e) => {
+    const menu = document.querySelector(".user-menu");
+    if (menu && !loginTrigger.contains(e.target)) {
+        menu.classList.remove("active");
+    }
+});
+
 // COMPULSORY CHECK ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
     updateAuthUI();
+    clearAuthInputs(); 
     if (mustLogin()) {
         setTimeout(openAuthModal, 500); 
     }
@@ -357,8 +380,8 @@ function showSignup() {
     signupCard.style.display = "block";
 }
 
-toLogin.addEventListener("click", (e) => { e.preventDefault(); showLogin(); });
-toSignup.addEventListener("click", (e) => { e.preventDefault(); showSignup(); });
+toLogin.addEventListener("click", (e) => { e.preventDefault(); clearAuthInputs(); showLogin(); });
+toSignup.addEventListener("click", (e) => { e.preventDefault(); clearAuthInputs(); showSignup(); });
 
 /* SIGNUP HANDLING */
 signupBtn.addEventListener("click", () => {
@@ -374,6 +397,7 @@ signupBtn.addEventListener("click", () => {
     localStorage.setItem("fakeAccountPass", pass);
     
     alert("Signup successful! Now please login.");
+    clearAuthInputs();
     showLogin();
 });
 
