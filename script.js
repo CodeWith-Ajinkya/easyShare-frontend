@@ -124,85 +124,58 @@ dropZone.addEventListener("drop", e => {
 
 /* UPLOAD FILE */
 function uploadFile(file) {
-
     if (mustLogin()) {
         openAuthModal();
         fileInput.value = "";
         return;
     }
 
-    // Hide dropzone during upload/result
     dropZone.style.display = "none";
     progressContainer.style.display = "block";
     shareContainer.style.display = "none";
 
-    progressFill.style.width = "4%";
-    progressPercent.innerText = "Connecting...";
+    progressFill.style.width = "0%";
+    progressPercent.innerText = "0%";
 
     const formData = new FormData();
     formData.append("myfile", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", `${API_BASE}/api/files`);
 
-    xhr.upload.onprogress = e => {
-        if (!e.lengthComputable) return;
-        const percent = Math.round((e.loaded / e.total) * 100);
-        progressFill.style.width = percent + "%";
-        progressPercent.innerText = percent + "%";
+    xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            progressFill.style.width = percent + "%";
+            progressPercent.innerText = percent + "%";
+        }
     };
 
     xhr.onload = () => {
+        progressContainer.style.display = "none";
         if (xhr.status !== 200) {
-            progressContainer.style.display = "none";
             showError("Upload failed!");
             dropZone.style.display = "flex";
             return;
         }
 
-        // Ensure progress shows 100% before hiding
-        progressFill.style.width = "100%";
-        progressPercent.innerText = "100%";
+        const res = JSON.parse(xhr.responseText);
+        fileLink.value = res.file;
+        uploadedUUID = res.uuid;
 
-        setTimeout(() => {
-            progressContainer.style.display = "none";
-            let res;
-            try {
-                res = JSON.parse(xhr.responseText);
-            } catch {
-                dropZone.style.display = "flex";
-                return showError("Invalid server response!");
-            }
+        const currentCount = parseInt(localStorage.getItem("uploadCount") || "0");
+        localStorage.setItem("uploadCount", currentCount + 1);
 
-            if (!res.file || !res.uuid) {
-                dropZone.style.display = "flex";
-                return showError("Server missing required fields!");
-            }
-
-            fileLink.value = res.file;
-            uploadedUUID = res.uuid;
-
-            // Increment upload count
-            const currentCount = parseInt(localStorage.getItem("uploadCount") || "0");
-            localStorage.setItem("uploadCount", currentCount + 1);
-
-            shareContainer.style.display = "flex";
-            fileInput.value = "";
-        }, 600); // reduced from 1s for snappier feel
+        shareContainer.style.display = "flex";
+        fileInput.value = "";
     };
 
     xhr.onerror = () => {
         progressContainer.style.display = "none";
         dropZone.style.display = "flex";
-        showError("Cannot connect to server! Please check your internet connection.");
+        showError("Server error! Please try again.");
     };
 
-    xhr.ontimeout = () => {
-        progressContainer.style.display = "none";
-        dropZone.style.display = "flex";
-        showError("Upload timed out! Please try again.");
-    };
-
+    xhr.open("POST", `${API_BASE}/api/files`);
     xhr.send(formData);
 }
 
@@ -361,12 +334,18 @@ window.addEventListener("click", (e) => {
     }
 });
 
-// COMPULSORY CHECK ON LOAD
+// COMPULSORY CHECK ON LOAD & FOCUS
 window.addEventListener("DOMContentLoaded", () => {
     updateAuthUI();
     clearAuthInputs(); 
     if (mustLogin()) {
-        setTimeout(openAuthModal, 500); 
+        openAuthModal(); 
+    }
+});
+
+window.addEventListener("focus", () => {
+    if (mustLogin()) {
+        openAuthModal();
     }
 });
 
