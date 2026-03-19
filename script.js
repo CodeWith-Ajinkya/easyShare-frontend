@@ -136,8 +136,8 @@ function uploadFile(file) {
     progressContainer.style.display = "block";
     shareContainer.style.display = "none";
 
-    progressFill.style.width = "0%";
-    progressPercent.innerText = "0%";
+    progressFill.style.width = "4%";
+    progressPercent.innerText = "Connecting...";
 
     const formData = new FormData();
     formData.append("myfile", file);
@@ -188,7 +188,7 @@ function uploadFile(file) {
 
             shareContainer.style.display = "flex";
             fileInput.value = "";
-        }, 1000); // 1s delay for visual completion (100% progress)
+        }, 600); // reduced from 1s for snappier feel
     };
 
     xhr.onerror = () => {
