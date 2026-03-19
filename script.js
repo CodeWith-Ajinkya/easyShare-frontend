@@ -67,7 +67,8 @@ function updateAuthUI() {
     }
 }
 
-function logout() {
+function logout(e) {
+    if (e) e.stopPropagation();
     localStorage.removeItem("isLoggedIn");
     updateAuthUI();
     alert("Logged out successfully.");
@@ -205,14 +206,8 @@ function uploadFile(file) {
     xhr.send(formData);
 }
 
-/* UPLOAD ANOTHER (RESET) */
-const reloadBtn = document.getElementById("reloadBtn");
-reloadBtn.addEventListener("click", () => {
-    if (mustLogin()) {
-        openAuthModal();
-        return;
-    }
-    
+/* RESET UI (UPLOAD ANOTHER) */
+function resetUI() {
     shareContainer.style.display = "none";
     dropZone.style.display = "flex";
     fileInput.value = "";
@@ -221,6 +216,15 @@ reloadBtn.addEventListener("click", () => {
     progressPercent.innerText = "0%";
     senderEmail.value = "";
     receiverEmail.value = "";
+}
+
+const reloadBtn = document.getElementById("reloadBtn");
+reloadBtn.addEventListener("click", () => {
+    if (mustLogin()) {
+        openAuthModal();
+        return;
+    }
+    resetUI();
 });
 
 
@@ -316,13 +320,24 @@ faqQuestions.forEach(question => {
 function openAuthModal() {
     loginModal.classList.add("show");
     
-    // If not logged in, ensure we show login card (default)
+    // STRICT Page view if login is compulsory (after 1st upload)
     if (mustLogin()) {
+        loginModal.classList.add("is-strict");
+        document.body.style.overflow = "hidden";
         showLogin(); 
+    } else {
+        loginModal.classList.remove("is-strict");
+        document.body.style.overflow = "auto";
     }
 }
 
-loginTrigger.addEventListener("click", openAuthModal);
+loginTrigger.addEventListener("click", (e) => {
+    // If logged in, the user menu handles logout; don't show login modal
+    if (localStorage.getItem("isLoggedIn") === "true") {
+        return; 
+    }
+    openAuthModal();
+});
 
 // COMPULSORY CHECK ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
@@ -378,8 +393,16 @@ loginBtn.addEventListener("click", () => {
         // Fake login success
         localStorage.setItem("isLoggedIn", "true");
         loginModal.classList.remove("show");
+        loginModal.classList.remove("is-strict");
+        document.body.style.overflow = "auto";
         updateAuthUI();
-        alert("Logged in successfully! You can now share files.");
+        
+        // Fulfill the intent to "Upload Another File" if they were on that screen
+        if (shareContainer.style.display === "flex") {
+            resetUI();
+        }
+        
+        alert("Logged in successfully! You can now share more files.");
     } else if (!savedEmail) {
         showError("No account found! Please sign up first.");
         showSignup();

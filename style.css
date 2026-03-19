@@ -981,6 +981,18 @@ body.dark-mode .icon {
     opacity: 1;
 }
 
+/* STRICT LOCK FOR COMPULSORY LOGIN */
+.modal-overlay.is-strict {
+    background: var(--bg-color);
+    backdrop-filter: blur(20px);
+}
+
+.modal-overlay.is-strict .login-card {
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+}
+
 .login-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
