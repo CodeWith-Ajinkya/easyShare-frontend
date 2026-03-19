@@ -36,7 +36,41 @@ const toSignup = document.getElementById("toSignup");
 
 function mustLogin() {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    return !isLoggedIn; // Compulsory for ALL uploads now
+    const uploadCount = parseInt(localStorage.getItem("uploadCount") || "0");
+    
+    // Only compulsory if they've already uploaded at least one file and haven't logged in
+    return !isLoggedIn && uploadCount >= 1;
+}
+
+function updateAuthUI() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const loginTrigger = document.getElementById("loginTrigger");
+    
+    const userSVG = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </svg>`;
+
+    if (isLoggedIn) {
+        loginTrigger.innerHTML = `
+            <div class="user-profile logged-in">
+                ${userSVG}
+                <div class="user-menu">
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        `;
+        document.getElementById("logoutBtn").addEventListener("click", logout);
+    } else {
+        loginTrigger.innerHTML = userSVG;
+    }
+}
+
+function logout() {
+    localStorage.removeItem("isLoggedIn");
+    updateAuthUI();
+    alert("Logged out successfully.");
 }
 
 let uploadedUUID = null;
@@ -174,6 +208,11 @@ function uploadFile(file) {
 /* UPLOAD ANOTHER (RESET) */
 const reloadBtn = document.getElementById("reloadBtn");
 reloadBtn.addEventListener("click", () => {
+    if (mustLogin()) {
+        openAuthModal();
+        return;
+    }
+    
     shareContainer.style.display = "none";
     dropZone.style.display = "flex";
     fileInput.value = "";
@@ -285,13 +324,11 @@ function openAuthModal() {
 
 loginTrigger.addEventListener("click", openAuthModal);
 
-// COMPULSORY CHECK ON LOAD: If not logged in, show login immediately
+// COMPULSORY CHECK ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
+    updateAuthUI();
     if (mustLogin()) {
-        setTimeout(openAuthModal, 500); // Small delay to allow UI to render
-    } else {
-        // Already logged in, maybe show visual feedback
-        loginTrigger.innerHTML = '✅';
+        setTimeout(openAuthModal, 500); 
     }
 });
 
@@ -341,7 +378,7 @@ loginBtn.addEventListener("click", () => {
         // Fake login success
         localStorage.setItem("isLoggedIn", "true");
         loginModal.classList.remove("show");
-        loginTrigger.innerHTML = '✅'; // Change icon to show logged in
+        updateAuthUI();
         alert("Logged in successfully! You can now share files.");
     } else if (!savedEmail) {
         showError("No account found! Please sign up first.");

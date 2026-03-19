@@ -250,7 +250,79 @@ body.dark-mode .icon-moon {
 .login-trigger:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px var(--accent-glow);
+    border-color: var(--primary);
+}
+
+.user-profile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: none;
+    min-width: 120px;
+    z-index: 1001;
+    animation: fadeIn 0.3s ease;
+}
+
+.user-profile:hover .user-menu {
+    display: block;
+}
+
+#logoutBtn {
+    width: 100%;
+    padding: 10px 15px;
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#logoutBtn:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+#logoutBtn::before {
+    content: "🚪"; 
+    font-size: 16px;
+}
+
+.user-profile.logged-in svg {
     color: var(--primary);
+    filter: drop-shadow(0 0 8px rgba(var(--primary-glow), 0.5));
+    stroke-width: 3;
+}
+
+.user-profile.logged-in::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #10b981; /* Green dot */
+    border: 2px solid var(--card-bg);
+    border-radius: 50%;
 }
 
 /* Main Container */
